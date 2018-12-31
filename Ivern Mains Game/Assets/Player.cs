@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     private KeyCode             myLeftKey;
     private KeyCode             myRightKey;
     private KeyCode             myUpKey;
+    private KeyCode             myLeftKeyAZERTY;
+    private KeyCode             myUpKeyAZERTY;
 
     public float                myWalkSpeed;
     private float               myJumpHeight;
@@ -35,9 +37,13 @@ public class Player : MonoBehaviour
         myRightKey              = KeyCode.D;
         myLeftKey               = KeyCode.A;
         myUpKey                 = KeyCode.W;
+        myLeftKeyAZERTY         = KeyCode.Q;
+        myUpKeyAZERTY           = KeyCode.Z;
 
         myWalkSpeed             = 30.0f;
-        myJumpHeight            = 700.0f; // why does this have to be so large?
+
+        myJumpHeight            = 1500.0f; // why does this have to be so large?
+
 
         myDirectionState        = DirectionState.eRight;
         myPlayerState           = PlayerState.eGrounded;
@@ -60,7 +66,7 @@ public class Player : MonoBehaviour
         {
             Walk(DirectionState.eRight);
         }
-        else if (Input.GetKey(myLeftKey))
+        else if (Input.GetKey(myLeftKey) || Input.GetKey(myLeftKeyAZERTY))
         {
             Walk(DirectionState.eLeft);
         }
@@ -69,7 +75,7 @@ public class Player : MonoBehaviour
             myRigidBody.velocity *= new Vector2(0.7f, 1.0f);
         }
 
-        if (Input.GetKey(myUpKey))
+        if (Input.GetKey(myUpKey) || Input.GetKey(myUpKeyAZERTY))
         {
             Jump();
         }
