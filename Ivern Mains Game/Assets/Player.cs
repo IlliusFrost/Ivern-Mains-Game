@@ -13,18 +13,18 @@ public class Player : MonoBehaviour
     private KeyCode             myRightKey;
     private KeyCode             myUpKey;
 
-    private float               myWalkSpeed;
+    public float                myWalkSpeed;
     private float               myJumpHeight;
 
     DirectionState              myDirectionState;
     PlayerState                 myPlayerState;
 
-    private enum DirectionState
+    public enum DirectionState
     {
         eLeft = -1,
         eRight = 1
     };
-    private enum PlayerState
+    public enum PlayerState
     {
         eGrounded,
         eAirborne
@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
         myUpKey                 = KeyCode.W;
 
         myWalkSpeed             = 30.0f;
-        myJumpHeight            = 3000.0f; // why does this have to be so large?
+        myJumpHeight            = 700.0f; // why does this have to be so large?
 
         myDirectionState        = DirectionState.eRight;
         myPlayerState           = PlayerState.eGrounded;
@@ -58,15 +58,11 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKey(myRightKey))
         {
-            Vector2 temp = new Vector2(myWalkSpeed, myRigidBody.velocity.y);
-            myRigidBody.velocity = temp;
-            myDirectionState = DirectionState.eRight;
+            Walk(DirectionState.eRight);
         }
         else if (Input.GetKey(myLeftKey))
         {
-            Vector2 temp = new Vector2(-myWalkSpeed, myRigidBody.velocity.y);
-            myRigidBody.velocity = temp;
-            myDirectionState = DirectionState.eLeft;
+            Walk(DirectionState.eLeft);
         }
         else
         {
@@ -89,13 +85,30 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void Jump()
+    public void Jump()
     {
         if (myPlayerState == PlayerState.eGrounded)
         {
             myRigidBody.AddForce(new Vector2(0.0f, myJumpHeight));
             myPlayerState = PlayerState.eAirborne;
         }
+    }
+
+    public void Walk(DirectionState aDirection)
+    {
+        Walk((int)aDirection);
+    }
+
+    public void Walk(int aDirection)
+    {
+        Vector2 temp = new Vector2(myWalkSpeed * aDirection, myRigidBody.velocity.y);
+        myRigidBody.velocity = temp;
+        myDirectionState = (DirectionState)aDirection;
+    }
+
+    public void Face(DirectionState aDirection)
+    {
+        myDirectionState = aDirection;
     }
 
     private void UpdateDirection()
